@@ -1,0 +1,10 @@
+.app {
+  display: flex;
+  flex-flow: row wrap
+}
+.app .temp {
+  width: 20%;
+}
+.app .textarea {
+  width: 80%;
+}
