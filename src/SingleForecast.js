@@ -6,7 +6,7 @@ const SingleForecast = ({ forecast }) => {
 	return(
 		<span>
       <span>Дата и время: {forecast.dt_txt}, </span>
-      <span>темпертура: {forecast.main.temp}℃, </span>
+      <span>температура: {forecast.main.temp}℃, </span>
       <span>давление: {forecast.main.pressure} гПа, </span>
       <span>{forecast.weather[0].description}</span><br/>
     </span>

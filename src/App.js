@@ -48,39 +48,22 @@ class App extends Component {
   }
 
   componentDidMount() {
-
-    const currentTime = +new Date();
-
-    const lastFetchingTime = Number(localStorage.getItem('time'))
-
-    const localWeather = localStorage.getItem('weather');
-
-    //fetch data not more often than 1 time every 10 minutes
-    if (!localWeather || (currentTime - lastFetchingTime > 600000)) {
-
-      fetch(API_URL)
-      .then(response => response.json()
-        .then(json => response.ok ? json : Promise.reject(json))
-      )
-      .then(json => {
-        localStorage.setItem('weather', JSON.stringify(json))
-        localStorage.setItem('time', +new Date())
-
-        this.setState({
-          list: json.list.slice(0, 8)
-        })
-
-      })
-      .catch(error => console.log('error', error))
-    } else {
-
-      const weather = JSON.parse(localWeather).list.slice(0,8)
-
+  
+    fetch(API_URL)
+    .then(response => response.json()
+      .then(json => response.ok ? json : Promise.reject(json))
+    )
+    .then(json => {
+      localStorage.setItem('weather', JSON.stringify(json))
+      localStorage.setItem('time', +new Date())
+    
       this.setState({
-        list: weather.slice(0, 8)
+        list: json.list.slice(0, 8)
       })
 
-    }
+    })
+    .catch(error => console.log('error', error))
+
     
   }
 
