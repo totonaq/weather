@@ -4,7 +4,14 @@ import PropTypes from 'prop-types';
 
 class TextArea extends Component {
 
- getCaretPosition = element => {
+	constructor(props) {
+		super(props)
+		this.state = {
+			caretOffset: 0
+		}
+	}
+
+ 	getCaretPosition = element => {
 
 		const ie = (typeof document.selection !== "undefined" && 
 			document.selection.type !== "Control") && true;
@@ -31,38 +38,51 @@ class TextArea extends Component {
 
     }
 
-    return caretOffset;
+    this.setState({caretOffset})
 
 	}
 
-	insertForecast = () => {
-		const content = this.content.textContent;
-		const split = this.getCaretPosition(this.content);
-		const firstPart = content.slice(0, split);
-		const lastPart = content.slice(split)
-		const text = firstPart + this.area.innerHTML + lastPart
+	getCursorPosition = () => {
+		this.getCaretPosition(this.content)
+	}
 
-		this.content.innerHTML = text
+	insertForecast = e => {
+
+		const { caretOffset } = this.state;
+		const { dayTime } = this.props;
+
+		const text = this.content.textContent;
+		const firstPart = text.slice(0, caretOffset);
+		const lastPart = text.slice(caretOffset);
+
+		const dayTimeClass = dayTime < 9 ? 'night' : 'day';
+
+		const insert = `${firstPart}<span class=${dayTimeClass}>
+			${e.target.parentNode.textContent}</span>${lastPart}`;
+
+		this.content.innerHTML = insert;
+
 	}
 
 	render() {
-		const { list } = this.props;
-		
+		const { list, dayTime } = this.props;
+	
 		return(
 			<div className='textarea'>
 				<div
 					contentEditable
 					suppressContentEditableWarning="true"
-					onClick={this.insertForecast}
-					onKeyUp={this.insertForecast}
+					onClick={this.getCursorPosition}
+					onKeyUp={this.getCursorPosition}
 					ref={node => this.content = node}
 					>
 					
 			  	<span>Lorem ipsum dolor sit amet</span>
 			  	
 				</div>
-				<div className='hiddenDiv' ref={node => this.area = node}>
-					<Forecast list={list} />
+				
+				<div onClick={this.insertForecast} className='forecast'>
+					<Forecast list={list} dayTime={dayTime} />
 				</div>
 				
 			</div>
@@ -71,7 +91,8 @@ class TextArea extends Component {
 }
 
 TextArea.propTypes = {
-	list: PropTypes.array.isRequired
+	list: PropTypes.array.isRequired,
+	dayTime: PropTypes.number.isRequired
 }
 
 export default TextArea

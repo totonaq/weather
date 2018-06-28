@@ -8,7 +8,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      list: []
+      list: [],
+      dayTime: 0
     }
   }
 
@@ -48,6 +49,10 @@ class App extends Component {
   }
 
   componentDidMount() {
+
+    const dayTime = new Date().getHours();
+
+    this.setState({dayTime})
   
     fetch(API_URL)
     .then(response => response.json()
@@ -63,13 +68,12 @@ class App extends Component {
 
     })
     .catch(error => console.log('error', error))
-
     
   }
 
   render() {
 
-    const { list } = this.state;
+    const { list, dayTime } = this.state;
 
     const minNight = this.getTemp(list).nightTemp.min || 0;
     const maxNight = this.getTemp(list).nightTemp.max || 0;
@@ -85,7 +89,7 @@ class App extends Component {
             minDay={minDay}
             maxDay={maxDay}
           />
-          <TextArea list={this.state.list} />
+          <TextArea list={this.state.list} dayTime={dayTime} />
         </div>
       
     );

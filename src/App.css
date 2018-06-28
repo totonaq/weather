@@ -2,12 +2,20 @@
   display: flex;
   flex-flow: row wrap
 }
-.app .temp {
+.temp {
   width: 20%;
 }
-.app .textarea {
-  width: 80%;
+.textarea {
+  width: 70%;
 }
-.hiddenDiv {
-	display: none;
+.forecast {
+	margin-top: 30px;
+}
+.day {
+	color: #000;
+	background-color: #ffff00;
+}
+.night {
+	color: #fff;
+	background-color: #000;
 }
